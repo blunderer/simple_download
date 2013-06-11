@@ -1,0 +1,21 @@
+#
+# simple downloader insterface with download stats.
+#
+
+# Dependencies
+This interface requires php and php-sqlite
+You need a webserver with the url rewrite capability
+
+# Installing / Configuring
+Install a webserver.
+- Copy index.php and index.css into the server root (or a virtual root if configured)
+- Activate the url rewriting in your web server: "^/pool(.*)$" => "/index.php?path=$1"
+- Create a pool folder and copy all files to be exposed into it
+Note: the pool folder can be renamed by simply modifying the $pool variable value in the index.php
+
+# Credits
+Author: Tristan Lelong <tristan.lelong@blunderer.org>
+License: BSD
+
+This interface is inspired by google-chrome embedded ftp by The Chromium Authors and distributed as BSD.
+
