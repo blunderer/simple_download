@@ -2,6 +2,8 @@
 
 /* config */
 $pool = "pool";
+$header = "header.html";
+$footer = "footer.html";
 
 ?>
 
@@ -94,6 +96,11 @@ if (is_dir("./$pool$path")) {
 
 <body>
 
+<?php
+if (file_exists($header))
+	require($header);
+?>
+
 <h1 id="header" > <?php print "Index of /$pool$path"; ?> </h1>
 
 <table id="table">
@@ -148,5 +155,11 @@ if (files) {
 ?>
 
 </table>
+
+<?php
+if (file_exists($footer))
+	require($footer);
+?>
+
 </body>
 </html>

@@ -16,6 +16,10 @@ Install a webserver.
 - Create a pool folder and copy all files to be exposed into it
 Note: the pool folder can be renamed by simply modifying the $pool variable value in the index.php
 
+# Customization
+It is possible to add a custom header and footer by creating 2 file header.html and footer.html
+To change the default names, just modify the index.php file variables: $header and $footer
+
 # Credits
 Author: Tristan Lelong <tristan.lelong@blunderer.org>
 License: BSD
