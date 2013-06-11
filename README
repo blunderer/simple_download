@@ -2,6 +2,9 @@
 # simple downloader insterface with download stats.
 #
 
+This simple downloader is a easy to install / host web interface that allow to track downloads (even with direct downloads).
+It aims at replacing the google project download page. 
+
 # Dependencies
 This interface requires php and php-sqlite
 You need a webserver with the url rewrite capability
