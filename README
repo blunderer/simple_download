@@ -1,5 +1,5 @@
 #
-# simple downloader insterface with download stats.
+# simple downloader interface with download stats.
 #
 
 This simple downloader is a easy to install / host web interface that allow to track downloads (even with direct downloads).
