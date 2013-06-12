@@ -100,8 +100,11 @@ if (is_dir("./$pool$path")) {
 <div id="page">
 
 <?php
-if (file_exists($header))
-	require($header);
+if (file_exists("./$pool$path$header"))
+		require("./$pool$path$header");
+else 
+	if (file_exists($header))
+		require($header);
 ?>
 
 <h1 id="header" > <?php print "Index of /$pool$path"; ?> </h1>
@@ -121,7 +124,7 @@ if (file_exists($header))
 $files = scandir("./$pool/$path");
 if (files) {
 	foreach($files as $entry) {
-		if ($entry != ".") {
+		if ($entry != "." && $entry != "$footer" && $entry != "$header") {
 			$order = 0;
 			$unit = array(" B", " kB", " MB", "GB", " TB");
 
@@ -160,8 +163,11 @@ if (files) {
 </table>
 
 <?php
-if (file_exists($footer))
-	require($footer);
+if (file_exists("./$pool$path$footer"))
+	require("./$pool$path$footer");
+else
+	if (file_exists($footer))
+		require($footer);
 ?>
 
 </div>
