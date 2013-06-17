@@ -12,9 +12,10 @@ $footer = "footer.html";
 /* util functions */
 function create_if_not_exist($db, $file)
 {
-	$ans = sqlite_query($db , "SELECT count from dlcount where id = '$file';");
-	if (0 == sqlite_num_rows($ans)) {
-		sqlite_query($db , "INSERT INTO dlcount (id, count, init) values ('$file', 0, 0);");
+	$ans = $db->query("SELECT count from dlcount where id = '$file';");
+	$values	= $ans->fetch();
+	if (count($values) == 0) {
+		$db->exec("INSERT INTO dlcount (id, count, init) values ('$file', 0, 0);");
 	}
 }
 
@@ -58,16 +59,11 @@ function add_entry_to_list($name, $link, $isdir, $size, $date, $dl)
 <?
 
 /* pre page load processing */
-if ($db = sqlite_open("files.db")) {
-	try {
-		sqlite_exec($db , "CREATE TABLE dlcount (id TEXT, count INT, init INT, PRIMARY KEY (id))");
-	} catch(Exception $e) {
-		;
-	}
-}
+$db = new PDO('sqlite:files.db');
+$db->exec('CREATE TABLE IF NOT EXISTS dlcount (id TEXT, count INT, init INT, PRIMARY KEY (id))');
 
 if (isset($_GET["path"])) {
-	$path .= $_GET["path"];
+	$path = $_GET["path"];
 } else {
 	print "<META http-equiv='refresh' content='0;URL=/$pool'>";
 	exit;
@@ -80,7 +76,7 @@ if (is_dir("./$pool$path")) {
 	$file = "./$pool$path";
 	if (file_exists($file)) {
 		create_if_not_exist($db, $file);
-		$ans = sqlite_query($db , "UPDATE dlcount set count = (count+1) where id = '$file';");
+		$ans = $db->exec("UPDATE dlcount set count = (count+1) where id = '$file';");
 		send_file_to_dl($file);
 		exit;
 	}
@@ -119,10 +115,8 @@ else
 
 <?php
 
-//if ($handle = opendir("./$pool/$path")) {
-//	while (false !== ($entry = readdir($handle))) {
 $files = scandir("./$pool/$path");
-if (files) {
+if ($files) {
 	foreach($files as $entry) {
 		if ($entry != "." && $entry != "$footer" && $entry != "$header") {
 			$order = 0;
@@ -145,8 +139,8 @@ if (files) {
 			if (!is_dir($filepath)) {
 				$isdir = 0;
 				create_if_not_exist($db, $filepath);
-				$ans = sqlite_query($db , "SELECT init, count from dlcount where id = '$filepath';");
-				$values = sqlite_fetch_array($ans);
+				$ans = $db->query("SELECT init, count FROM dlcount WHERE id = '$filepath';");
+				$values	= $ans->fetch();
 				$dl_count = $values["init"] + $values["count"];
 			} else {
 				$isdir = 1;
@@ -155,8 +149,6 @@ if (files) {
 			add_entry_to_list($name, $filelink, $isdir, $strsize, $strdate, $dl_count);
 		}
 	}
-
-	closedir($handle);
 }
 ?>
 
